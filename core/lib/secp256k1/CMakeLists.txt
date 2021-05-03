@@ -16,6 +16,9 @@ project(secp256k1 LANGUAGES C)
 
 set(COMMON_COMPILE_FLAGS ENABLE_MODULE_RECOVERY ENABLE_MODULE_ECDH USE_ECMULT_STATIC_PRECOMPUTATION USE_FIELD_INV_BUILTIN USE_NUM_NONE USE_SCALAR_INV_BUILTIN)
 
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
+include(NativeExecutable)
+
 if (MSVC OR MINGW OR CMAKE_OSX_SYSROOT STREQUAL iphoneos)
     set(COMPILE_FLAGS USE_FIELD_10X26 USE_SCALAR_8X32)
     set(COMPILE_OPTIONS -fPIC)
@@ -44,8 +47,8 @@ configure_file("${CMAKE_INSTALL_PREFIX}/gen_context/ecmult_static_context.h" "${
             ${CMAKE_INSTALL_PREFIX}/gen_context/ecmult_static_context.h
             ${CMAKE_SOURCE_DIR}/src/ecmult_static_context.h)
 else()
-    add_executable(gen_context src/gen_context.c)
-    target_include_directories(gen_context PRIVATE ${CMAKE_SOURCE_DIR})
+    add_native_executable(gen_context src/gen_context.c)
+    native_target_include_directories(gen_context PRIVATE ${CMAKE_SOURCE_DIR})
     add_custom_target(ecmult_static_context gen_context WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
     add_dependencies(secp256k1 ecmult_static_context)
 endif()
