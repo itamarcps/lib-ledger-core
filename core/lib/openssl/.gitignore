@@ -86,7 +86,6 @@ crypto/sha/asm/sha512-sse2.asm
 !/crypto/des/times/486-50.sol
 
 # Misc auto generated files
-/tools/c_rehash
 /test/evptests.txt
 lib
 Makefile.save
